@@ -1,18 +1,40 @@
 <%- contentFor('title') %>
 New Campground
 <%- contentFor('body') %>
-<form action="/campgrounds" method="POST">
-    <div class="mb-2">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" id="title" class="form-control" name="campground[title]">
-    </div>
-    <div>
-        <label for="location" class="form-label">Location</label>
-        <input type="text" id="location" class="form-control" name="campground[location]">
-    </div>
-    <button type="submit" class="my-3 btn btn-primary">Confirm</button>
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <h1>New Campground</h1>
+        <form class="form" action="/campgrounds" method="POST">
+            <div class="mb-2">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" id="title" class="form-control" name="campground[title]">
+            </div>
+            <div class="row">
+                <div class="mb-2 col-sm-6">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" id="location" class="form-control" name="campground[location]">
+                </div>
+                <div class="mb-2 col-sm-6">
+                    <label for="price" class="form-label">Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="text" id="price" class="form-control" name="campground[price]">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="imagePath" class="form-label">Image path</label>
+                <input type="text" id="imagePath" class="form-control" name="campground[imagePath]" placeholder="preferably 16x9">
+            </div>
+            <div class="mb-2">
+                <label for="description" class="form-label">Description</label>
+                <textarea rows="4" id="description" class="form-control" name="campground[description]"></textarea>
+            </div>
+            <button type="submit" class="my-2 btn btn-success">Confirm</button>
 
-    <footer>
-        <a href="/campgrounds">Back to all</a>
-    </footer>
-</form>
+            <footer>
+                <a href="/campgrounds">Back to all</a>
+            </footer>
+        </form>
+    </div>
+</div>

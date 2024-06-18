@@ -1,18 +1,40 @@
 <%- contentFor('title') %>
 Edit Campground
 <%- contentFor('body') %>
-<form class="form" action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
-    <div class="mb-2">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" id="title" class="form-control" name="campground[title]" value="<%= campground.title %>">
-    </div>
-    <div>
-        <label for="location" class="form-label">Location</label>
-        <input type="text" id="location" class="form-control" name="campground[location]" value="<%= campground.location %>">
-    </div>
-    <button type="submit" class="my-3 btn btn-success">Confirm</button>
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <h1>Edit Campground</h1>
+        <form class="form" action="/campgrounds/<%= campground._id %>?_method=PUT" method="POST">
+            <div class="mb-2">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" id="title" class="form-control" name="campground[title]" value="<%= campground.title %>">
+            </div>
+            <div class="row">
+                <div class="mb-2 col-sm-6">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" id="location" class="form-control" name="campground[location]" value="<%= campground.location %>">
+                </div>
+                <div class="mb-2 col-sm-6">
+                    <label for="price" class="form-label">Price</label>
+                    <div class="input-group">
+                        <span class="input-group-text" id="price-label">$</span>
+                        <input type="text" id="price" class="form-control" name="campground[price]" value="<%= campground.price %>" aria-describedby="price-label">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="imagePath" class="form-label">Image path</label>
+                <input type="text" id="imagePath" class="form-control" name="campground[imagePath]" placeholder="preferably 16x9" value="<%= campground.imagePath %>">
+            </div>
+            <div class="mb-2">
+                <label for="description" class="form-label">Description</label>
+                <textarea rows="4" id="description" class="form-control" name="campground[description]" placeholder="preferably 16x9"><%= campground.description %></textarea>
+            </div>
+            <button type="submit" class="my-2 btn btn-info">Confirm</button>
 
-    <footer>
-        <a href="/campgrounds">Back to all</a>
-    </footer>
-</form>
+            <footer>
+                <a href="/campgrounds">Back to all</a>
+            </footer>
+        </form>
+    </div>
+</div>

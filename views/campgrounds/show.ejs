@@ -1,14 +1,33 @@
 <%- contentFor('title') %>
 Campground: <%= campground.title %>
 <%- contentFor('body') %>
-<h1><%= campground.title %></h1>
-<h3><%= campground.location %></h3>
-<img class="img-fluid" style="max-height: 36rem;" src="<%= campground.imagePath %>" alt="">
-<p><%= campground.description %></p>
 
-<a href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-<form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
-    <!-- <button type="submit">Delete</button> -->
-</form>
 
-<a href="/campgrounds">Back to all</a>
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+            <img class="card-img-top" src="<%= campground.imagePath %>" alt="">
+            <div class="card-body">
+                <h2 class="card-title"><%= campground.title %></h2>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-0">
+                        <h4><%= campground.location %></h4>
+                    </li>
+                    <li class="list-group-item px-0">
+                        <%= campground.description %>
+                    </li>
+                    <li class="list-group-item px-0">
+                        $<%= campground.price %> / night
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <a class="card-link btn btn-info py-1 me-1" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+                <form class="d-inline me-1" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger py-1" type="submit">Delete</button>
+                </form>
+                <a class="card-link btn btn-secondary py-1" href="/campgrounds">Back to all</a>
+            </div>
+        </div>
+    </div>
+</div>

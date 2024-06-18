@@ -1,16 +1,38 @@
 <%- contentFor('title') %>
 YelpCamp - Home
 <%- contentFor('body') %>
-<h1>Campgrounds:</h1>
+<h1>Campgrounds</h1>
 
 <!-- <a href="/campgrounds/new">Add new</a> -->
 
-<ul>
-    <% for (let camp of campgrounds) { %>
-    <li class="my-1">
-        <a href="/campgrounds/<%= camp._id %>">
-            <b><%= camp.title %> (<%= camp.location %>)</b>
-        </a>
-    </li>
+<section class="row row-cols-1 row-cols-lg-2 g-4">
+    <% for (let campground of campgrounds) { %>
+    <article class="col">
+        <div class="card h-100">
+            <div class="row g-0">
+                <div class="col-lg-6 ratio ratio-16x9">
+                    <img class="img-fluid object-fit-cover" src="<%= campground.imagePath %>" alt="" data-url="/campgrounds/<%= campground._id %>">
+                </div>
+                <div class="col-lg-6">
+                    <div class="card-body">
+                        <a class="text-reset" href="/campgrounds/<%= campground._id %>">
+                            <h5><%= campground.title %></h5>
+                        </a>
+                        <p class="mb-0"><%= campground.location %></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
     <% } %>
-</ul>
+</section>
+<script>
+    document.querySelectorAll('.img-fluid').forEach((img) => {
+        img.addEventListener('click', (ev) => {
+            window.location.href = img.dataset.url;
+        });
+    });
+</script>
+
+<!-- <a href="/campgrounds/<%= //camp._id %>">
+</a> -->
