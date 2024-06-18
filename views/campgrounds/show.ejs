@@ -1,25 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- contentFor('title') %>
+Campground: <%= campground.title %>
+<%- contentFor('body') %>
+<h1><%= campground.title %></h1>
+<h3><%= campground.location %></h3>
+<img class="img-fluid" style="max-height: 36rem;" src="<%= campground.imagePath %>" alt="">
+<p><%= campground.description %></p>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campground: <%= campground.title %></title>
-</head>
+<a href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+<form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+    <!-- <button type="submit">Delete</button> -->
+</form>
 
-<body>
-    <h1>Campground</h1>
-    <h2><%= campground.title %></h2>
-    <h3><%= campground.location %></h3>
-
-    <a href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-    <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
-        <button type="submit">Delete</button>
-    </form>
-
-    <footer>
-        <a href="/campgrounds">Back to all</a>
-    </footer>
-</body>
-
-</html>
+<a href="/campgrounds">Back to all</a>
