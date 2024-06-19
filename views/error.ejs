@@ -1,0 +1,14 @@
+<%- contentFor('title') %>
+<%= 'YelpCamp - ' + err.status %>
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-lg-8 offset-lg-2 alert alert-danger" role="alert">
+        <h1 class="alert-heading">
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/<%= err.status %>">
+                <%= err.status %>
+            </a>
+        </h1>
+        <h3><%= err.message %></h3>
+        <small><%= err.stack %></small>
+    </div>
+</div>
