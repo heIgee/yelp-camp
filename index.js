@@ -6,9 +6,12 @@ import expressEjsLayouts from 'express-ejs-layouts';
 import wrap from 'express-async-handler';
 import Joi from 'joi';
 
-import Campground from './models/campground.js';
+import Campground from './models/Campground.js';
+import Review from './models/Review.js';
+
 import ExpressError from './helpers/ExpressError.js';
 import CampgroundValidator from './helpers/CampgroundValidator.js';
+import ReviewValidator from './helpers/ReviewValidator.js';
 
 const app = express();
 
@@ -57,11 +60,6 @@ app.get('/campgrounds/new', (req, res) => {
 });
 
 app.post('/campgrounds', CampgroundValidator.test, wrap(async (req, res) => {
-    if (!req.body.campground) {
-        // TODO joi
-        throw new ExpressError(400, 'Invalid Post Data');
-    }
-
     const camp = new Campground(req.body.campground);
     await camp.save();
     res.redirect(`/campgrounds/${camp._id}`)
@@ -69,13 +67,13 @@ app.post('/campgrounds', CampgroundValidator.test, wrap(async (req, res) => {
 
 app.get('/campgrounds/:id', wrap(async (req, res) => {
     const { id } = req.params;
-    const camp = await Campground.findById(id);
+    const campground = await Campground.findById(id).populate('reviews');
 
-    if (camp) {
-        res.render('campgrounds/show', { campground: camp });
+    if (campground) {
+        res.render('campgrounds/show', { campground });
     }
     else {
-        res.status(404).send('Not found');
+        throw new ExpressError(404, 'Not Found');
     }
 }));
 
@@ -87,7 +85,7 @@ app.get('/campgrounds/:id/edit', wrap(async (req, res) => {
         res.render('campgrounds/edit', { campground });
     }
     else {
-        res.status(404).send('Not found');
+        throw new ExpressError(404, 'Not Found');
     }
 }));
 
@@ -99,7 +97,7 @@ app.put('/campgrounds/:id', CampgroundValidator.test, wrap(async (req, res) => {
         res.redirect(`/campgrounds/${campground._id}`);
     }
     else {
-        res.status(404).send('Not found');
+        throw new ExpressError(404, 'Not Found');
     }
 }));
 
@@ -111,8 +109,40 @@ app.delete('/campgrounds/:id', wrap(async (req, res) => {
         res.redirect('/campgrounds');
     }
     else {
-        res.status(404).send('Not found');
+        throw new ExpressError(404, 'Not Found');
     }
+}));
+
+app.post('/campgrounds/:id/reviews', ReviewValidator.test, wrap(async (req, res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);
+
+    if (!campground) {
+        throw new ExpressError(404, 'Not Found');
+    }
+
+    const { rating, content } = req.body.review;
+    const review = new Review({
+        rating, content, id
+    });
+    campground.reviews.push(review);
+    review.campground = campground;
+    await review.save();
+    await campground.save();
+
+    console.log(review.campground);
+
+    res.redirect(`/campgrounds/${id}`);
+}));
+
+app.delete('/campgrounds/:campId/reviews/:reviewId', wrap(async (req, res) => {
+    const { campId, reviewId } = req.params;
+    await Review.findByIdAndDelete(reviewId);
+    // campground.reviews.filter(r => r._id !== reviewId); // classic solution
+    await Campground.findByIdAndUpdate(campId, {
+        $pull: { reviews: reviewId }
+    });
+    res.redirect(`/campgrounds/${campId}`);
 }));
 
 app.all('*', (res, req, next) => {
@@ -122,7 +152,7 @@ app.all('*', (res, req, next) => {
 app.use((err, req, res, next) => {
     err.status ||= 500;
     err.message ||= 'Went Bananas!';
-    res.status(err.status).render('error', { err }); // `Custom handler: ${message}`
+    res.status(err.status).render('error', { err });
 });
 
 app.listen(3000, () => {

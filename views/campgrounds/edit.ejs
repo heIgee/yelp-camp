@@ -38,14 +38,4 @@ Edit Campground
         </form>
     </div>
 </div>
-<script>
-    const form = document.querySelector('form');
-    form.addEventListener('submit', (ev) => {
-        if (!form.checkValidity()) {
-            ev.preventDefault();
-            ev.stopPropagation();
-        }
-        // bootstrap validation takeover
-        form.classList.add('was-validated');
-    });
-</script>
+<script src="/js/formValidate.js"></script>

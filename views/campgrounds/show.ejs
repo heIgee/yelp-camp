@@ -2,32 +2,69 @@
 Campground: <%= campground.title %>
 <%- contentFor('body') %>
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <section class="card">
+                <img class="card-img-top" src="<%= campground.imagePath %>" alt="">
+                <div class="card-body">
+                    <h2 class="card-title"><%= campground.title %></h2>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item px-0">
+                            <h4><%= campground.location %></h4>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <%= campground.description %>
+                        </li>
+                        <li class="list-group-item px-0">
+                            $<%= campground.price %> / night
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a class="card-link btn btn-info py-1 me-1" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+                    <form class="d-inline me-1" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger py-1" type="submit">Delete</button>
+                    </form>
+                    <a class="card-link btn btn-secondary py-1" href="/campgrounds">Back to all</a>
+                </div>
+            </section>
+        </div>
+        <div class="col-lg-6">
+            <section class="my-3 list-group">
 
-<div class="row">
-    <div class="col-lg-8 offset-lg-2">
-        <div class="card">
-            <img class="card-img-top" src="<%= campground.imagePath %>" alt="">
-            <div class="card-body">
-                <h2 class="card-title"><%= campground.title %></h2>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item px-0">
-                        <h4><%= campground.location %></h4>
-                    </li>
-                    <li class="list-group-item px-0">
-                        <%= campground.description %>
-                    </li>
-                    <li class="list-group-item px-0">
-                        $<%= campground.price %> / night
-                    </li>
-                </ul>
-            </div>
-            <div class="card-footer">
-                <a class="card-link btn btn-info py-1 me-1" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
-                <form class="d-inline me-1" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-danger py-1" type="submit">Delete</button>
+                <h4 class="list-group-item my-0">Add a review</h4>
+                <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="form list-group-item" novalidate>
+                    <div class="mb-2">
+                        <label for="rating" class="form-label">Rating: </label>
+                        <input type="range" min="1" max="10" value="7" step="1" id="rating" class="form-range" name="review[rating]" oninput="this.nextElementSibling.value = this.value" required>
+                        <output class="form-label">7</output>
+                    </div>
+                    <div class="mb-2">
+                        <label for="content" class="form-label">Review: </label>
+                        <textarea rows="3" id="content" class="form-control" name="review[content]" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Send</button>
                 </form>
-                <a class="card-link btn btn-secondary py-1" href="/campgrounds">Back to all</a>
-            </div>
+            </section>
+
+            <ul class="list-group">
+                <h4 class="list-group-item my-0">All reviews</h4>
+                <% for (let review of campground.reviews) { %>
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <h5><b><%= review.rating %></b><small class="text-secondary">/10</small></h5>
+                        <p class="mb-2"><%= review.content %></p>
+
+                    </div>
+                    <form class="d-inline" action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-sm dtn-danger float-end p-1">&#x2716;</button>
+                    </form>
+                </li>
+                <% } %>
+            </ul>
         </div>
     </div>
+
 </div>
+<script src="/js/formValidate.js"></script>

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import fetch from 'node-fetch';
 import cities from './cities.js';
 import { places, descriptors } from './seedHelpers.js';
-import Campground from '../models/campground.js';
+import Campground from '../models/Campground.js';
 
 const seedQuantity = process.argv[2] || 16;
 const unsplashAccessKey = 'eSIt3-UvqEnbd5kNmYwLrEP0I1aSl0ACBUFhf6TgibY';
@@ -37,10 +37,12 @@ const seedDB = async () => {
             title: `${sample(descriptors)} ${sample(places)}`,
             imagePath: await fetchRandomCampgroundPhoto(),
             price: Math.ceil(Math.random() * 20) + 20,
-            description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.Totam, eum.',
+            description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam, eum.',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
+            // reviews: [], // does not work here, check schema's default
         });
-        await camp.save();
+        const res = await camp.save();
+        console.log(res);
     }
 };
 
