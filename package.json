@@ -18,10 +18,12 @@
   "homepage": "https://github.com/heIgee/YelpCamp#readme",
   "description": "",
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-async-handler": "^1.2.0",
     "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.0",
     "joi": "^17.13.1",
     "method-override": "^3.0.0",
     "mongoose": "^8.4.1",
