@@ -1,7 +1,6 @@
 <%- contentFor('title') %>
 Campground: <%= campground.title %>
 <%- contentFor('body') %>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6">
@@ -31,7 +30,7 @@ Campground: <%= campground.title %>
             </section>
         </div>
         <div class="col-lg-6">
-            <section class="my-3 list-group">
+            <section class="mb-3 list-group">
 
                 <h4 class="list-group-item my-0">Add a review</h4>
                 <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="form list-group-item" novalidate>

@@ -1,0 +1,22 @@
+<%- contentFor('title') %>
+YelpCamp - Login
+<%- contentFor('body') %>
+<div class="row">
+    <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <h1>Login</h1>
+        <form class="form" action="/login" method="POST" novalidate>
+            <div class="mb-2">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" id="username" class="form-control" name="username" required>
+            </div>
+            <div class="mb-2">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-control" name="password" required>
+            </div>
+
+            <button type="submit" class="my-2 btn btn-info">Login</button>
+
+        </form>
+    </div>
+</div>
+<script src="/js/formValidate.js"></script>

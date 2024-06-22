@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark navbar-expand-lg bg-primary sticky-top">
+<nav class="navbar navbar-dark navbar-expand-lg bg-primary fixed-top">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">YelpCamp</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,6 +9,15 @@
                 <a class="nav-link nav-item" aria-current="page" href="/">Home</a>
                 <a class="nav-link nav-item" href="/campgrounds">Campgrounds</a>
                 <a class="nav-link nav-item" href="/campgrounds/new">New</a>
+            </ul>
+            <ul class="navbar-nav ms-auto me-4">
+                <% if (user) { %>
+                <a class="nav-link nav-item disabled">Signed in as <i><%= user.username %></i></a>
+                <a class="nav-link nav-item" href="/logout">Logout</a>
+                <% } else { %>
+                <a class="nav-link nav-item" href="/login">Login</a>
+                <a class="nav-link nav-item" href="/register">Register</a>
+                <% } %>
             </ul>
         </div>
     </div>

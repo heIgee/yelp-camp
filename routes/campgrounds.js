@@ -10,6 +10,8 @@ import ExpressError from '../helpers/ExpressError.js';
 import CampgroundValidator from '../helpers/CampgroundValidator.js';
 import ReviewValidator from '../helpers/ReviewValidator.js';
 
+import { ensureLoggedIn } from '../middleware.js';
+
 const router = express.Router();
 
 router.get('/campgrounds', wrap(async (req, res, next) => {
@@ -17,15 +19,15 @@ router.get('/campgrounds', wrap(async (req, res, next) => {
     res.render('campgrounds/index', { campgrounds: allCamps });
 }));
 
-router.get('/campgrounds/new', (req, res) => {
+router.get('/campgrounds/new', ensureLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 });
 
 router.post('/campgrounds', CampgroundValidator.test, wrap(async (req, res) => {
-    const camp = new Campground(req.body.campground);
-    await camp.save();
+    const campground = new Campground(req.body.campground);
+    await campground.save();
     req.flash('success', 'Your campground was created');
-    res.redirect(`/campgrounds/${camp._id}`)
+    res.redirect(`/campgrounds/${campground._id}`);
 }));
 
 router.get('/campgrounds/:id', wrap(async (req, res) => {
@@ -48,7 +50,7 @@ router.get('/campgrounds/:id', wrap(async (req, res) => {
     res.render('campgrounds/show', { campground });
 }));
 
-router.get('/campgrounds/:id/edit', wrap(async (req, res) => {
+router.get('/campgrounds/:id/edit', ensureLoggedIn, wrap(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findById(id);
 
@@ -71,7 +73,7 @@ router.put('/campgrounds/:id', CampgroundValidator.test, wrap(async (req, res) =
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
-router.delete('/campgrounds/:id', wrap(async (req, res) => {
+router.delete('/campgrounds/:id', ensureLoggedIn, wrap(async (req, res) => {
     const { id } = req.params;
     const campground = await Campground.findByIdAndDelete(id);
 
@@ -84,24 +86,24 @@ router.delete('/campgrounds/:id', wrap(async (req, res) => {
 }));
 
 router.post('/campgrounds/:id/reviews', ReviewValidator.test, wrap(async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findById(id);
+    const { id: campId } = req.params;
+    const campground = await Campground.findById(campId);
 
     if (!campground) {
         throw new ExpressError(404, 'Not Found');
     }
 
     const { rating, content } = req.body.review;
-    const review = new Review({
-        rating, content, id
-    });
+    const review = new Review({ rating, content, campId });
+
     campground.reviews.push(review);
     review.campground = campground;
+
     await review.save();
     await campground.save();
 
     req.flash('success', 'Your review was sent');
-    res.redirect(`/campgrounds/${id}`);
+    res.redirect(`/campgrounds/${campId}`);
 }));
 
 router.delete('/campgrounds/:campId/reviews/:reviewId', wrap(async (req, res) => {
