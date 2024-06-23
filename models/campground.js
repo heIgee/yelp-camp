@@ -17,6 +17,10 @@ const campgroundSchema = new Schema({
     location: {
         type: String,
     },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     reviews: {
         type: [
             {
@@ -26,6 +30,18 @@ const campgroundSchema = new Schema({
         ],
         default: []
     }
+});
+
+campgroundSchema.static('populateDocument', async function (campground) {
+    return this.populate(campground, [
+        {
+            path: 'reviews',
+            populate: {
+                path: 'author'
+            }
+        },
+        { path: 'owner' }
+    ]);
 });
 
 campgroundSchema.post(['findOneAndDelete', 'deleteOne'], async function (doc) {

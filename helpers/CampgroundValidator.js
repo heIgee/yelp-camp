@@ -14,7 +14,6 @@ class CampgroundValidator {
     });
 
     static test = (req, res, next) => {
-        // console.log(this); // kill me pls
         const { error } = this.validator.validate(req.body);
         if (error) {
             throw new ExpressError(400, error.details.map(d => d.message).join(', '));
@@ -22,7 +21,7 @@ class CampgroundValidator {
         else {
             return next();
         }
-    }
+    };
 }
 
 export default CampgroundValidator;

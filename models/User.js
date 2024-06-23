@@ -7,6 +7,24 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true
+    },
+    campgrounds: {
+        type: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Campground'
+            }
+        ],
+        default: []
+    },
+    reviews: {
+        type: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Review'
+            }
+        ],
+        default: []
     }
 });
 

@@ -16,15 +16,20 @@ Campground: <%= campground.title %>
                             <%= campground.description %>
                         </li>
                         <li class="list-group-item px-0">
+                            by <%= campground.owner.username %>
+                        </li>
+                        <li class="list-group-item px-0">
                             $<%= campground.price %> / night
                         </li>
                     </ul>
                 </div>
                 <div class="card-footer">
+                    <% if (user?._id.equals(campground.owner._id)) { %>
                     <a class="card-link btn btn-info py-1 me-1" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
                     <form class="d-inline me-1" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
                         <button class="btn btn-danger py-1" type="submit">Delete</button>
                     </form>
+                    <% } %>
                     <a class="card-link btn btn-secondary py-1" href="/campgrounds">Back to all</a>
                 </div>
             </section>
@@ -47,18 +52,25 @@ Campground: <%= campground.title %>
                 </form>
             </section>
 
+            <!-- <h4 class="card list-group-item my-0">All reviews</h4> -->
             <ul class="list-group">
-                <h4 class="list-group-item my-0">All reviews</h4>
                 <% for (let review of campground.reviews) { %>
-                <li class="list-group-item d-flex justify-content-between">
-                    <div>
-                        <h5><b><%= review.rating %></b><small class="text-secondary">/10</small></h5>
-                        <p class="mb-2"><%= review.content %></p>
+                <li class="card list-group-item mb-3 border">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-body p-0">
+                            <h5 class="card-title">
+                                <b><%= review.rating %></b><small class="text-secondary">/10</small>
+                            </h5>
+                            <p class="card-subtitle mb-2 "><span class="text-secondary">by </span><%= review.author.username %></p>
+                            <p class="card-text mb-2"><%= review.content %></p>
+                        </div>
+                        <% if (user?._id.equals(review.author?._id)) { %>
+                        <form class="d-inline" action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-sm dtn-danger float-end p-1">&#x2716;</button>
+                        </form>
+                        <% } %>
 
                     </div>
-                    <form class="d-inline" action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                        <button class="btn btn-sm dtn-danger float-end p-1">&#x2716;</button>
-                    </form>
                 </li>
                 <% } %>
             </ul>

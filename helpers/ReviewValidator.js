@@ -18,7 +18,7 @@ class ReviewValidator {
         else {
             return next();
         }
-    }
+    };
 }
 
 export default ReviewValidator;

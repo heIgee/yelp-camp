@@ -5,12 +5,15 @@ import mongoose from 'mongoose';
 import Campground from '../models/Campground.js';
 import Review from '../models/Review.js';
 
-import ExpressError from '../helpers/ExpressError.js';
-
 import CampgroundValidator from '../helpers/CampgroundValidator.js';
 import ReviewValidator from '../helpers/ReviewValidator.js';
 
-import { ensureLoggedIn } from '../middleware.js';
+import {
+    ensureLoggedIn,
+    verifyCampground,
+    verifyCampgroundAndOwner,
+    verifyReviewAndAuthor
+} from '../middleware.js';
 
 const router = express.Router();
 
@@ -23,99 +26,80 @@ router.get('/campgrounds/new', ensureLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 });
 
-router.post('/campgrounds', CampgroundValidator.test, wrap(async (req, res) => {
+router.post('/campgrounds', ensureLoggedIn, CampgroundValidator.test, wrap(async (req, res) => {
     const campground = new Campground(req.body.campground);
+    campground.owner = req.user._id;
     await campground.save();
     req.flash('success', 'Your campground was created');
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
-router.get('/campgrounds/:id', wrap(async (req, res) => {
-    const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        req.flash('error', 'Invalid campground ID');
-        return res.redirect('/campgrounds');
-        // throw new ExpressError(400, 'Invalid campground ID');
-    }
-
-    const campground = await Campground.findById(id).populate('reviews');
-
-    if (!campground) {
-        req.flash('error', 'Cannot find that campground');
-        res.redirect('/campgrounds');
-        // throw new ExpressError(404, 'Cannot find that campground');
-    }
-
+router.get('/campgrounds/:id', verifyCampground, wrap(async (req, res) => {
+    const campground = await Campground.populateDocument(res.locals.campground);
     res.render('campgrounds/show', { campground });
 }));
 
-router.get('/campgrounds/:id/edit', ensureLoggedIn, wrap(async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findById(id);
+router.get('/campgrounds/:id/edit', ensureLoggedIn, verifyCampgroundAndOwner,
+    wrap(async (req, res) => {
+        const campground = res.locals.campground;
+        res.render('campgrounds/edit', { campground });
+    })
+);
 
-    if (!campground) {
-        throw new ExpressError(404, 'Not Found');
-    }
+router.put('/campgrounds/:id', ensureLoggedIn, verifyCampgroundAndOwner, CampgroundValidator.test,
+    wrap(async (req, res) => {
+        const { id: campgroundId } = req.params;
+        await Campground.updateOne({ campgroundId }, req.body.campground);
 
-    res.render('campgrounds/edit', { campground });
-}));
-
-router.put('/campgrounds/:id', CampgroundValidator.test, wrap(async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findByIdAndUpdate(id, req.body.campground);
-
-    if (!campground) {
-        throw new ExpressError(404, 'Not Found');
-    }
-
-    req.flash('success', 'Your campground was updated');
-    res.redirect(`/campgrounds/${campground._id}`);
-}));
+        req.flash('success', 'Your campground was updated');
+        res.redirect(`/campgrounds/${campgroundId}`);
+    })
+);
 
 router.delete('/campgrounds/:id', ensureLoggedIn, wrap(async (req, res) => {
-    const { id } = req.params;
-    const campground = await Campground.findByIdAndDelete(id);
-
-    if (!campground) {
-        throw new ExpressError(404, 'Not Found');
-    }
+    const { id: campgroundId } = req.params;
+    await Campground.deleteOne({ _id: campgroundId });
 
     req.flash('success', 'Your campground was deleted');
     res.redirect('/campgrounds');
 }));
 
-router.post('/campgrounds/:id/reviews', ReviewValidator.test, wrap(async (req, res) => {
-    const { id: campId } = req.params;
-    const campground = await Campground.findById(campId);
+router.post('/campgrounds/:id/reviews', ensureLoggedIn, verifyCampground, ReviewValidator.test,
+    wrap(async (req, res) => {
+        const campground = res.locals.campground;
+        const campgroundId = campground._id;
 
-    if (!campground) {
-        throw new ExpressError(404, 'Not Found');
-    }
+        const { rating, content } = req.body.review;
+        const review = new Review({ rating, content, campgroundId });
 
-    const { rating, content } = req.body.review;
-    const review = new Review({ rating, content, campId });
+        campground.reviews.unshift(review);
+        review.campground = campground;
 
-    campground.reviews.push(review);
-    review.campground = campground;
+        req.user.reviews.unshift(review); // TODO not pushing
+        review.author = req.user._id; // while this works
 
-    await review.save();
-    await campground.save();
+        await review.save();
+        await campground.save();
 
-    req.flash('success', 'Your review was sent');
-    res.redirect(`/campgrounds/${campId}`);
-}));
+        req.flash('success', 'Your review was sent');
+        res.redirect(`/campgrounds/${campgroundId}`);
+    })
+);
 
-router.delete('/campgrounds/:campId/reviews/:reviewId', wrap(async (req, res) => {
-    const { campId, reviewId } = req.params;
-    await Review.findByIdAndDelete(reviewId);
-    // campground.reviews.filter(r => r._id !== reviewId); // classic solution
-    await Campground.findByIdAndUpdate(campId, {
-        $pull: { reviews: reviewId }
-    });
+router.delete('/campgrounds/:id/reviews/:reviewId', ensureLoggedIn, verifyCampground, verifyReviewAndAuthor,
+    wrap(async (req, res) => {
 
-    req.flash('success', 'Review was deleted');
-    res.redirect(`/campgrounds/${campId}`);
-}));
+        const { id: campgroundId, reviewId } = req.params;
+
+        await Review.deleteOne({ _id: reviewId });
+
+        await Campground.updateOne({ _id: campgroundId }, {
+            $pull: { reviews: reviewId }
+        });
+
+        req.flash('success', 'Review was deleted');
+        res.redirect(`/campgrounds/${campgroundId}`);
+    })
+);
 
 export default router;
