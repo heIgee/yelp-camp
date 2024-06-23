@@ -12,8 +12,9 @@ import User from './models/User.js';
 
 import ExpressError from './helpers/ExpressError.js';
 
-import campgroundsRouter from './routes/campgrounds.js';
-import authRouter from './routes/auth.js';
+import campgroundsRouter from './routes/campgroundsRouter.js';
+import reviewsRouter from './routes/reviewsRouter.js';
+import authRouter from './routes/authRouter.js';
 
 const app = express();
 
@@ -91,6 +92,7 @@ app.use((req, res, next) => {
 // routers
 
 app.use('/', campgroundsRouter);
+app.use('/', reviewsRouter);
 app.use('/', authRouter);
 
 app.get('/', (req, res) => {
