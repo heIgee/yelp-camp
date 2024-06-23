@@ -3,8 +3,8 @@ import mongoose, { Schema } from 'mongoose';
 const reviewSchema = new Schema({
     rating: {
         type: Number,
-        min: 0,
-        max: 10,
+        min: 1,
+        max: 5,
     },
     content: {
         type: String,

@@ -5,7 +5,7 @@ class ReviewValidator {
 
     static validator = Joi.object({
         review: Joi.object({
-            rating: Joi.number().integer().min(1).max(10).required(),
+            rating: Joi.number().integer().min(1).max(5).required(),
             content: Joi.string().required(),
         }).required()
     });

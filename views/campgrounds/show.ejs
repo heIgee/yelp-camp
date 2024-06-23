@@ -35,20 +35,41 @@ Campground: <%= campground.title %>
             </section>
         </div>
         <div class="col-lg-6">
-            <section class="mb-3 list-group">
+            <section class="mb-2 list-group">
 
                 <h4 class="list-group-item my-0">Add a review</h4>
-                <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="form list-group-item" novalidate>
-                    <div class="mb-2">
-                        <label for="rating" class="form-label">Rating: </label>
-                        <input type="range" min="1" max="10" value="7" step="1" id="rating" class="form-range" name="review[rating]" oninput="this.nextElementSibling.value = this.value" required>
-                        <output class="form-label">7</output>
+                <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" class="form list-group-item mb-2" novalidate>
+                    <div class="d-flex align-items-center justify-content-between mb-2">
+                        <!-- <label for="rating" class="form-label">Rating: </label> -->
+                        <link rel="stylesheet" href="/css/stars.css">
+                        <fieldset class="d-inline starability-basic" style="min-height: 0;">
+                            <!-- <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." /> -->
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" checked />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                        <button type="submit" class="d-inline btn btn-success my-1 float-end">Send</button>
+                        <!-- <input type="range" min="1" max="5" value="3" step="1" id="rating" class="form-range" name="review[rating]" required>
+                        <h4 class="d-flex justify-content-center"></h4>
+                        <h4 class="d-flex justify-content-center"></h4>
+                        <script>
+                            document.querySelector('#rating').addEventListener('input', function(ev) {
+                                this.nextElementSibling.innerHTML = '&#9733;'.repeat(this.value);
+                                this.nextElementSibling.nextElementSibling.textContent = this.value;
+                            });
+                        </script> -->
                     </div>
                     <div class="mb-2">
-                        <label for="content" class="form-label">Review: </label>
+                        <!-- <label for="content" class="form-label">Review: </label> -->
                         <textarea rows="3" id="content" class="form-control" name="review[content]" required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-success">Send</button>
                 </form>
             </section>
 
@@ -59,7 +80,15 @@ Campground: <%= campground.title %>
                     <div class="d-flex justify-content-between">
                         <div class="card-body p-0">
                             <h5 class="card-title">
-                                <b><%= review.rating %></b><small class="text-secondary">/10</small>
+                                <div class='d-flex mb-2'>
+                                    <% for( let i = 0; i < review?.rating; i++ ) { %>
+                                    <div class=''>&#9733;</div>
+                                    <% } %>
+                                    <% for( let i = 0; i < 5 - review?.rating; i++ ) { %>
+                                    <div class=''>&#9734;</div>
+                                    <% } %>
+                                </div>
+                                <!-- <b><%= //review.rating %></b><small class="text-secondary">/5</small> -->
                             </h5>
                             <p class="card-subtitle mb-2 "><span class="text-secondary">by </span><%= review.author.username %></p>
                             <p class="card-text mb-2"><%= review.content %></p>
