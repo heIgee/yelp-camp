@@ -5,7 +5,27 @@ Campground: <%= campground.title %>
     <div class="row">
         <div class="col-lg-6">
             <section class="card">
-                <img class="card-img-top" src="<%= campground.imagePath %>" alt="">
+
+                <div id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <% campground.images.forEach((image, i) => { %>
+                        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                            <img src="<%= image.url %>" class="card-img-top w-100" alt="" style="height: 30rem; object-fit: cover;">
+                        </div>
+                        <% }) %>
+                    </div>
+                    <% if (campground.images.length > 1) { %>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselAutoplaying" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    <% } %>
+                </div>
+
                 <div class="card-body">
                     <h2 class="card-title"><%= campground.title %></h2>
                     <ul class="list-group list-group-flush">

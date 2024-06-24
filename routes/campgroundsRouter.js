@@ -1,9 +1,9 @@
 import express from 'express';
 
 import CampgroundValidator from '../helpers/CampgroundValidator.js';
-import ReviewValidator from '../helpers/ReviewValidator.js';
-
 import CampgroundController from '../controllers/CampgroundController.js';
+
+import { cloudinary, storage } from '../cloudinary/index.js';
 
 import {
     ensureLoggedIn,
@@ -12,21 +12,25 @@ import {
     verifyReviewAndAuthor
 } from '../middleware.js';
 
+import multer from 'multer';
+const upload = multer({ storage });
+
 const router = express.Router();
 
-router.route('/campgrounds')
+router.route('/')
     .get(CampgroundController.getIndex)
     .post(ensureLoggedIn,
+        upload.array('images'),
         CampgroundValidator.test,
         CampgroundController.create
     );
 
-router.get('/campgrounds/new',
+router.get('/new',
     ensureLoggedIn,
     CampgroundController.getNew
 );
 
-router.route('/campgrounds/:id')
+router.route('/:id')
     .get(verifyCampground,
         CampgroundController.show
     )
@@ -39,24 +43,10 @@ router.route('/campgrounds/:id')
         CampgroundController.delete
     );
 
-router.get('/campgrounds/:id/edit',
+router.get('/:id/edit',
     ensureLoggedIn,
     verifyCampgroundAndOwner,
     CampgroundController.edit
-);
-
-router.post('/campgrounds/:id/reviews',
-    ensureLoggedIn,
-    verifyCampground,
-    ReviewValidator.test,
-    CampgroundController.createReview
-);
-
-router.delete('/campgrounds/:id/reviews/:reviewId',
-    ensureLoggedIn,
-    verifyCampground,
-    verifyReviewAndAuthor,
-    CampgroundController.deleteReview
 );
 
 export default router;

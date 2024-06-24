@@ -45,7 +45,8 @@ class AuthController {
                 const redirectUrl = req.session.lastPage;
                 delete req.session.lastPage;
                 res.redirect(redirectUrl);
-            } else {
+            }
+            else {
                 req.flash('success', 'Welcome back!');
                 res.redirect('/campgrounds');
             }

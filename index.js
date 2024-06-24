@@ -1,3 +1,11 @@
+import { configDotenv } from 'dotenv';
+
+if (process.env.NODE_ENV !== 'production') {
+    configDotenv();
+}
+
+// console.warn(process.env);
+
 import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';
@@ -91,12 +99,13 @@ app.use((req, res, next) => {
 
 // routers
 
-app.use('/', campgroundsRouter);
-app.use('/', reviewsRouter);
+app.use('/campgrounds', campgroundsRouter);
+app.use('/campgrounds/:id/reviews', reviewsRouter);
 app.use('/', authRouter);
 
 app.get('/', (req, res) => {
     req.flash('success', 'You are being redirected!');
+    req.flash('error', 'You are being redirected!');
     res.redirect('/campgrounds');
 });
 
@@ -105,6 +114,9 @@ app.all('*', (res, req, next) => {
 });
 
 app.use((err, req, res, next) => {
+    if (typeof err === 'string' || err instanceof String) {
+        return res.status(500).send(err);
+    }
     err.status ||= 500;
     err.message ||= 'Went Bananas!';
     res.status(err.status).render('error', { err });

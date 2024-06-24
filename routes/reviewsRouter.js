@@ -12,14 +12,14 @@ import {
 
 const router = express.Router({ mergeParams: true });
 
-router.post('/campgrounds/:id/reviews',
+router.post('/',
     ensureLoggedIn,
     verifyCampground,
     ReviewValidator.test,
     ReviewController.create
 );
 
-router.delete('/campgrounds/:id/reviews/:reviewId',
+router.delete('/:reviewId',
     ensureLoggedIn,
     verifyCampground,
     verifyReviewAndAuthor,
