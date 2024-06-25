@@ -1,5 +1,6 @@
 import wrap from 'express-async-handler';
 import Campground from '../models/Campground.js';
+import { cloudinary } from '../cloudinary/index.js';
 
 class CampgroundController {
 
@@ -33,16 +34,47 @@ class CampgroundController {
 
     update = wrap(async (req, res) => {
         const { id: campgroundId } = req.params;
-        console.log(req.body.campground);
-        console.log(campgroundId);
         const { title, location, price, description } = req.body.campground;
 
-        // await Campground.updateOne({ campgroundId }, req.body.campground);
-        await Campground.updateOne({ _id: campgroundId }, {
-            $set: {
-                title: title, location: location, price: price, description: description
+        await Campground.updateOne(
+            { _id: campgroundId },
+            {
+                $set: {
+                    title, location, price, description
+                }
             }
-        });
+        );
+
+        if (req.files && req.files.length) {
+            await Campground.updateOne(
+                { _id: campgroundId },
+                {
+                    $push: {
+                        images: {
+                            $each: req.files.map(f => ({ url: f.path, filename: f.filename }))
+                        }
+                    }
+                }
+            );
+        }
+
+        if (req.body.deleteImages && req.body.deleteImages.length > 0) {
+            for (let filename of req.body.deleteImages) {
+                await cloudinary.uploader.destroy(filename);
+            }
+            await Campground.updateOne(
+                { _id: campgroundId },
+                {
+                    $pull: {
+                        images: {
+                            filename: {
+                                $in: req.body.deleteImages
+                            }
+                        }
+                    }
+                }
+            );
+        }
 
         req.flash('success', 'Your campground was updated');
         res.redirect(`/campgrounds/${campgroundId}`);
@@ -50,11 +82,11 @@ class CampgroundController {
 
     delete = wrap(async (req, res) => {
         const { id: campgroundId } = req.params;
-        await Campground.deleteOne({ _id: campgroundId });
+        await Campground.findOneAndDelete({ _id: campgroundId });
 
         req.flash('success', 'Your campground was deleted');
         res.redirect('/campgrounds');
     });
 }
 
-export default new CampgroundController();;
+export default new CampgroundController();

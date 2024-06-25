@@ -6,7 +6,7 @@ class CampgroundValidator {
     static validator = Joi.object({
         campground: Joi.object({
             title: Joi.string().required(),
-            // image: Joi.array().items(Joi.object({
+            // images: Joi.array().items(Joi.object({
             //     url: Joi.string().uri(),
             //     filename: Joi.string()
             // })),
@@ -14,7 +14,8 @@ class CampgroundValidator {
             price: Joi.number().positive().required(),
             description: Joi.string().required(),
             location: Joi.string().required(),
-        }).required()
+        }).required(),
+        deleteImages: Joi.array()
     });
 
     static test = (req, res, next) => {

@@ -22,11 +22,14 @@ New Campground
                     </div>
                 </div>
             </div>
-            <!-- <div class="mb-2">
-                <label for="imagePath" class="form-label">Image path</label>
-                <input type="text" id="imagePath" class="form-control" name="campground[imagePath]" placeholder="preferably 16x9" required>
-            </div> -->
-            <input type="file" name="images" accept="image/*" multiple="true" id="">
+            <div class="mb-2">
+                <label for="images" class="form-label">Add Images</label>
+                <input class="form-control" type="file" name="images" accept="image/*" id="images" multiple>
+            </div>
+            <div id="image-preview" class="mt-3">
+            </div>
+
+            <script src="/js/imagePreview.js"></script>
 
             <div class="mb-2">
                 <label for="description" class="form-label">Description</label>

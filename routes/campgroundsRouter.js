@@ -36,6 +36,7 @@ router.route('/:id')
     )
     .put(ensureLoggedIn,
         verifyCampgroundAndOwner,
+        upload.array('images'),
         CampgroundValidator.test,
         CampgroundController.update
     )
