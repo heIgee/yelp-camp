@@ -58,14 +58,15 @@ const fetchRandomCampgroundPhotos = async (count) => {
 
 const seedDB = async () => {
     await Campground.deleteMany({});
+    const maxImages = 4;
 
-    const totalImages = seedQuantity * 3; // Maximum images needed
+    const totalImages = seedQuantity * maxImages; // Maximum images needed
     const photos = await fetchRandomCampgroundPhotos(totalImages);
     let photoIndex = 0;
 
     for (let i = 0; i < seedQuantity; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
-        const numImages = Math.ceil(Math.random() * 3);
+        const numImages = Math.ceil(Math.random() * maxImages);
         const images = [];
 
         for (let j = 0; j < numImages; j++) {
@@ -75,12 +76,21 @@ const seedDB = async () => {
             });
         }
 
-        const location = `${cities[random1000].city}, ${cities[random1000].state}`;
+        const randomCity = cities[random1000];
+        const location = `${randomCity.city}, ${randomCity.state}`;
+        const geometry = {
+            type: 'Point',
+            coordinates: [
+                randomCity.longitude,
+                randomCity.latitude
+            ]
+        };
 
-        const geoData = await geocoder.forwardGeocode({
-            query: location,
-            limit: 1
-        }).send();
+        // unnecessary requests
+        // const geoData = await geocoder.forwardGeocode({
+        //     query: location,
+        //     limit: 1
+        // }).send();
 
         const numOfSentences = Math.ceil(Math.random() * 5) + 3;
         const description = lorem.generateSentences(numOfSentences);
@@ -91,7 +101,7 @@ const seedDB = async () => {
             price: Math.ceil(Math.random() * 20) + 20,
             description: description,
             location: location,
-            geometry: geoData.body.features[0].geometry
+            geometry: geometry // geoData.body.features[0].geometry
             // reviews: [], // does not work here, check schema's default
         });
 

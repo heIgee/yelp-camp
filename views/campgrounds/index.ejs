@@ -1,31 +1,33 @@
 <%- contentFor('title') %>
 YelpCamp - Home
 <%- contentFor('body') %>
-<h1>Campgrounds</h1>
+<div id="map" style="width: 100%; height: 40rem;"></div>
+<div class="container mt-2">
+    <h1 class="text-center my-4">Campgrounds</h1>
 
-<!-- <a href="/campgrounds/new">Add new</a> -->
-
-<section class="row row-cols-1 row-cols-lg-2 g-4">
-    <% for (let campground of campgrounds) { %>
-    <article class="col">
-        <div class="card h-100">
-            <div class="row g-0">
-                <div class="col-lg-6 ratio ratio-16x9">
-                    <img class="img-fluid card-img-top object-fit-cover" src="<%= campground.images.length ? campground.images[0].url : 'https://img.freepik.com/free-vector/camping-area-landscape-concept_23-2148670950.jpg' %>" alt="" data-url="/campgrounds/<%= campground._id %>">
-                </div>
-                <div class="col-lg-6">
-                    <div class="card-body">
-                        <a class="text-reset" href="/campgrounds/<%= campground._id %>">
-                            <h5><%= campground.title %></h5>
-                        </a>
-                        <p class="mb-0"><%= campground.location %></p>
+    <section class="row row-cols-1 row-cols-lg-2 g-4">
+        <% for (let campground of campgrounds) { %>
+        <article class="col">
+            <div class="card h-100">
+                <div class="row g-0">
+                    <div class="col-lg-6 ratio ratio-16x9">
+                        <img class="img-fluid card-img-top object-fit-cover" src="<%= campground.images.length ? campground.images[0].url : 'https://img.freepik.com/free-vector/camping-area-landscape-concept_23-2148670950.jpg' %>" alt="" data-url="/campgrounds/<%= campground._id %>">
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card-body">
+                            <a class="text-reset" href="/campgrounds/<%= campground._id %>">
+                                <h5><%= campground.title %></h5>
+                            </a>
+                            <p class="mb-0"><%= campground.location %></p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </article>
-    <% } %>
-</section>
+        </article>
+        <% } %>
+    </section>
+
+</div>
 <script>
     document.querySelectorAll('.img-fluid').forEach((img) => {
         img.addEventListener('click', (ev) => {
@@ -36,3 +38,9 @@ YelpCamp - Home
 
 <!-- <a href="/campgrounds/<%= //camp._id %>">
 </a> -->
+
+<script>
+    const campgrounds = JSON.parse('<%- JSON.stringify(campgrounds) %>');
+</script>
+
+<script src="/js/clusterMap.js"></script>

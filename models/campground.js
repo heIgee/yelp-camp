@@ -59,7 +59,11 @@ const campgroundSchema = new Schema({
         ],
         default: []
     }
-});
+},
+    {
+        toJSON: { virtuals: true }
+    }
+);
 
 campgroundSchema.static('populateDocument', async function (campground) {
     return this.populate(campground, [
@@ -71,6 +75,20 @@ campgroundSchema.static('populateDocument', async function (campground) {
         },
         { path: 'owner' }
     ]);
+});
+
+campgroundSchema.virtual('geojson').get(function () {
+    return {
+        type: 'Feature',
+        geometry: this.geometry,
+        properties: {
+            id: this._id,
+            title: this.title,
+            description: this.description,
+            location: this.location,
+            price: this.price
+        }
+    };
 });
 
 // 'deleteOne' will NOT work here
