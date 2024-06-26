@@ -4,8 +4,6 @@ if (process.env.NODE_ENV !== 'production') {
     configDotenv();
 }
 
-// console.warn(process.env);
-
 import express from 'express';
 import mongoose from 'mongoose';
 import path from 'path';

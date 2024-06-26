@@ -18,6 +18,7 @@
   "homepage": "https://github.com/heIgee/YelpCamp#readme",
   "description": "",
   "dependencies": {
+    "@mapbox/mapbox-sdk": "^0.16.0",
     "cloudinary": "^1.41.3",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.4.5",

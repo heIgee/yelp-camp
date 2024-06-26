@@ -4,6 +4,12 @@ Campground: <%= campground.title %>
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-6">
+            <script>
+                const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+                const campground = JSON.parse('<%- JSON.stringify(campground) %>');
+            </script>
+            <script src="/js/showMap.js"></script>
+
             <section class="card">
 
                 <div id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
@@ -55,6 +61,8 @@ Campground: <%= campground.title %>
             </section>
         </div>
         <div class="col-lg-6 mt-3 mt-lg-0">
+            <div id='map' class="card mb-2" style='width: 100%; height: 30rem;'></div>
+
             <section class="mb-2 list-group">
 
                 <h4 class="list-group-item my-0">Add a review</h4>
@@ -76,15 +84,6 @@ Campground: <%= campground.title %>
                             <label for="first-rate5" title="Amazing">5 stars</label>
                         </fieldset>
                         <button type="submit" class="d-inline btn btn-success my-1 float-end">Send</button>
-                        <!-- <input type="range" min="1" max="5" value="3" step="1" id="rating" class="form-range" name="review[rating]" required>
-                        <h4 class="d-flex justify-content-center"></h4>
-                        <h4 class="d-flex justify-content-center"></h4>
-                        <script>
-                            document.querySelector('#rating').addEventListener('input', function(ev) {
-                                this.nextElementSibling.innerHTML = '&#9733;'.repeat(this.value);
-                                this.nextElementSibling.nextElementSibling.textContent = this.value;
-                            });
-                        </script> -->
                     </div>
                     <div class="mb-2">
                         <!-- <label for="content" class="form-label">Review: </label> -->

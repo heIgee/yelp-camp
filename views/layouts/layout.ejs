@@ -10,6 +10,9 @@
     <%- defineContent('style') %>
 </head>
 
+<script src='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v3.4.0/mapbox-gl.css' rel='stylesheet' />
+
 <body class="d-flex flex-column vh-100">
     <%- include('../partials/navbar') %>
     <main class="container mb-5" style="margin-top: 96px !important">
@@ -19,6 +22,8 @@
     <%- include('../partials/footer') %>
     <script src="/js/bootstrap.min.js"></script>
     <%- script %>
+
+
 </body>
 
 </html>

@@ -1,6 +1,9 @@
 import wrap from 'express-async-handler';
+import mbxGeocoding from '@mapbox/mapbox-sdk/services/geocoding.js';
 import Campground from '../models/Campground.js';
 import { cloudinary } from '../cloudinary/index.js';
+
+const geocoder = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 class CampgroundController {
 
@@ -10,7 +13,12 @@ class CampgroundController {
     });
 
     create = wrap(async (req, res) => {
+        const geoData = await geocoder.forwardGeocode({
+            query: req.body.campground.location,
+            limit: 1
+        }).send();
         const campground = new Campground(req.body.campground);
+        campground.geometry = geoData.body.features[0].geometry;
         campground.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
         campground.owner = req.user._id;
         await campground.save();
