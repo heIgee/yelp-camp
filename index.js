@@ -14,6 +14,7 @@ import session from 'express-session';
 import flash from 'connect-flash';
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
+import MongoStore from 'connect-mongo';
 
 import User from './models/User.js';
 
@@ -28,9 +29,14 @@ const app = express();
 
 // mongo
 
-mongoose.connect('mongodb://localhost:27017/YelpCamp', {
+// const dbUrl = process.env.NODE_ENV === 'production'
+//     ? process.env.ATLAS_URL
+//     : 'mongodb://localhost:27017/YelpCamp';
 
-});
+const dbUrl = process.env.ATLAS_URL;
+// const dbUrl = 'mongodb://localhost:27017/YelpCamp';
+
+mongoose.connect(dbUrl, {});
 
 const db = mongoose.connection;
 
@@ -59,6 +65,11 @@ app.set('layout extractStyles', true);
 
 app.use(expressEjsLayouts);
 
+// app.use(helmet({
+//     // TODO set up CSP
+//     contentSecurityPolicy: {}
+// }));
+
 app.use(
     mongoSanitize({
         replaceWith: '_',
@@ -67,15 +78,19 @@ app.use(
 
 const sessionConfig = {
     name: 'campfire',
-    secret: 'wetbananas',
+    secret: process.env.SECRET, // TODO env
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
         // secure: true, // only HTTPS
         maxAge: 1000 * 60 * 60 * 24
-    }
-    // store: redisStore // TODO
+    },
+    store: MongoStore.create({
+        mongoUrl: dbUrl,
+        touchAfter: 24 * 3600, // in seconds
+
+    })
 };
 
 // must be before passport.session()
@@ -127,6 +142,8 @@ app.use((err, req, res, next) => {
     res.status(err.status).render('error', { err });
 });
 
-app.listen(3000, () => {
-    console.log('🚀 Server is listening on http://localhost:3000 💕');
+const port = process.env.PORT || 80;
+
+app.listen(port, () => {
+    console.log('🚀 Server is listening on http://localhost:80 💕');
 });
