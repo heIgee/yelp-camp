@@ -1,6 +1,6 @@
 import express from 'express';
 
-import CampgroundValidator from '../helpers/CampgroundValidator.js';
+import CampgroundValidator from '../helpers/validators/CampgroundValidator.js';
 import CampgroundController from '../controllers/CampgroundController.js';
 
 import { cloudinary, storage } from '../cloudinary/index.js';
@@ -10,7 +10,7 @@ import {
     verifyCampground,
     verifyCampgroundAndOwner,
     verifyReviewAndAuthor
-} from '../middleware.js';
+} from '../helpers/middleware.js';
 
 import multer from 'multer';
 const upload = multer({ storage });

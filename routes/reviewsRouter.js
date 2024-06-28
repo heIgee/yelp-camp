@@ -1,6 +1,6 @@
 import express from 'express';
 
-import ReviewValidator from '../helpers/ReviewValidator.js';
+import ReviewValidator from '../helpers/validators/ReviewValidator.js';
 
 import ReviewController from '../controllers/ReviewController.js';
 
@@ -8,7 +8,7 @@ import {
     ensureLoggedIn,
     verifyCampground,
     verifyReviewAndAuthor
-} from '../middleware.js';
+} from '../helpers/middleware.js';
 
 const router = express.Router({ mergeParams: true });
 

@@ -1,6 +1,6 @@
-import ExpressError from './helpers/ExpressError.js';
-import Campground from './models/Campground.js';
-import Review from './models/Review.js';
+import ExpressError from './ExpressError.js';
+import Campground from '../models/Campground.js';
+import Review from '../models/Review.js';
 import mongoose from 'mongoose';
 
 import wrap from 'express-async-handler';

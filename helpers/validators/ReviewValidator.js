@@ -1,12 +1,12 @@
-import Joi from "joi";
-import ExpressError from "./ExpressError.js";
+import Joi from '../JoiStrip.js';
+import ExpressError from "../ExpressError.js";
 
 class ReviewValidator {
 
     static validator = Joi.object({
         review: Joi.object({
             rating: Joi.number().integer().min(1).max(5).required(),
-            content: Joi.string().required(),
+            content: Joi.string().htmlStrip().required(),
         }).required()
     });
 

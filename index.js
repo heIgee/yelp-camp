@@ -6,6 +6,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 import express from 'express';
 import mongoose from 'mongoose';
+import mongoSanitize from 'express-mongo-sanitize';
 import path from 'path';
 import methodOverride from 'method-override';
 import expressEjsLayouts from 'express-ejs-layouts';
@@ -58,12 +59,20 @@ app.set('layout extractStyles', true);
 
 app.use(expressEjsLayouts);
 
+app.use(
+    mongoSanitize({
+        replaceWith: '_',
+    }),
+);
+
 const sessionConfig = {
+    name: 'campfire',
     secret: 'wetbananas',
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true, // only HTTPS
         maxAge: 1000 * 60 * 60 * 24
     }
     // store: redisStore // TODO

@@ -1,19 +1,15 @@
-import Joi from "joi";
-import ExpressError from "./ExpressError.js";
+import Joi from "../JoiStrip.js";
+import ExpressError from "../ExpressError.js";
 
 class CampgroundValidator {
 
     static validator = Joi.object({
         campground: Joi.object({
-            title: Joi.string().required(),
-            // images: Joi.array().items(Joi.object({
-            //     url: Joi.string().uri(),
-            //     filename: Joi.string()
-            // })),
-            // imagePath: Joi.string().uri().required(),
+            title: Joi.string().htmlStrip().required(),
+            // TODO images validation
             price: Joi.number().positive().required(),
-            description: Joi.string().required(),
-            location: Joi.string().required(),
+            description: Joi.string().htmlStrip().required(),
+            location: Joi.string().htmlStrip().required(),
         }).required(),
         deleteImages: Joi.array()
     });
