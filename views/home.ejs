@@ -1,0 +1,131 @@
+<%- contentFor('title') %>
+YelpCamp - Welcome
+
+<%- contentFor('body') %>
+
+<link rel="stylesheet" href="/css/home.css">
+
+<script>
+    document.querySelector('body').classList.add('bg-dark');
+    const navbar = document.querySelector('.navbar');
+    navbar.classList.add('bg-transparent');
+
+    const triggerHeight = document.querySelector('.yelp-camp-home-welcome').clientHeight;
+    window.addEventListener('scroll', function() {
+        console.log(window.scrollY);
+        console.log(navbar.classList);
+        if (window.scrollY >= triggerHeight) {
+            navbar.classList.remove('bg-transparent');
+            navbar.classList.add('bg-primary');
+        } else {
+            navbar.classList.remove('bg-primary');
+            navbar.classList.add('bg-transparent');
+        }
+    });
+</script>
+
+<div class="container-fluid p-0">
+
+    <div class="yelp-camp-home-welcome d-flex align-items-center text-white yelp-camp-welcome position-relative overflow-hidden p-3 p-md-5 m-0 text-center bg-body-secondary">
+        <div class="col-md-6 p-lg-5 mx-auto my-5">
+            <h1 class="display-3 fw-bold">Welcome to YelpCamp</h1>
+            <h3 class="fw-normal text-light mb-3">Discover and share the best camping spots</h3>
+            <div class="d-flex gap-3 justify-content-center lead fw-normal">
+                <a class="btn btn-info btn-lg" href="/campgrounds">View Campgrounds</a>
+                <% if (!user) { %>
+                <a class="btn btn-outline-secondary btn-lg" href="/register">Sign Up</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid position-relative p-0">
+
+        <!-- <div class="bg-dark m-0 py-2 px-5"> -->
+
+        <div class="d-flex align-items-center justify-content-center text-center yelp-camp-home-cards position-relative container bg-dark my-5">
+            <div class="position-relative row row-cols-1 row-cols-md-3 g-5">
+                <div class="col">
+                    <div class="card h-100 text-center text-light bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Explore</h5>
+                            <p class="card-text">Discover new camping destinations and read reviews from fellow campers.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 text-center text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Share</h5>
+                            <p class="card-text">Add your favorite camping spots and help others find great locations.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 text-center text-light bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Connect</h5>
+                            <p class="card-text">Join a community of outdoor enthusiasts and share your experiences.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- </div> -->
+
+        <div class="yelp-camp-home-content container-fluid bg-dark text-white my-0">
+            <div class="container">
+
+                <style>
+                    .yelp-camp-note {
+                        border-left: solid 2px lightblue;
+                    }
+
+                    .yelp-camp-note.order-md-2 {
+                        border: 0;
+                        border-right: solid 2px lightblue;
+                    }
+
+                    /* < lg */
+                    @media (width < 992px) {
+                        .yelp-camp-note {
+                            border: 0 !important;
+                            padding-left: 1rem !important;
+                            padding-right: 1rem !important;
+                        }
+                    }
+                </style>
+
+                <div class="row align-items-center mb-5">
+                    <div class="yelp-camp-note col-md-6 offset-md-1 px-4">
+                        <h2>Discover New Adventures</h2>
+                        <p class="text-light">Explore a wide variety of camping locations, from serene lakesides to challenging mountain campsites. YelpCamp helps you find the perfect outdoor adventure that matches your preferences and skill level.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="https://images.unsplash.com/photo-1532339142463-fd0a8979791a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Lakeside Camping" class="img-fluid rounded shadow">
+                    </div>
+                </div>
+
+                <div class="row align-items-center mb-5">
+                    <div class="yelp-camp-note col-md-6 text-md-end order-md-2 px-4">
+                        <h2>Share Your Experiences</h2>
+                        <p class="text-light">Contribute to our growing community by sharing your favorite camping spots and experiences. Your reviews and ratings help fellow campers make informed decisions and discover hidden gems.</p>
+                    </div>
+                    <div class="col-md-4 offset-md-1 order-md-1">
+                        <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Camping Scene" class="img-fluid rounded shadow">
+                    </div>
+                </div>
+
+                <div class="row align-items-center">
+                    <div class="yelp-camp-note col-md-6 offset-md-1 px-4">
+                        <h2>Connect with Nature Lovers</h2>
+                        <p class="text-light">Join a vibrant community of outdoor enthusiasts. Exchange tips, share stories, and make new friends who share your passion for camping and nature exploration.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="https://images.unsplash.com/photo-1510312305653-8ed496efae75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80" alt="Campfire Community" class="img-fluid rounded shadow">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

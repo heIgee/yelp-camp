@@ -1,0 +1,14 @@
+.yelp-camp-welcome {
+    height: 90vh;
+    background:
+        linear-gradient(120deg, rgb(0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 30%),
+        url('https://images.unsplash.com/photo-1504851149312-7a075b496cc7?q=80&w=1905&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+}
+
+main {
+    margin-top: 0;
+}
+
+.navbar {
+    transition: background-color 0.5s ease;
+}

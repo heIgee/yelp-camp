@@ -1,7 +1,11 @@
 <%- contentFor('title') %>
 YelpCamp - Home
 <%- contentFor('body') %>
-<div id="map" style="width: 100%; height: 40rem;"></div>
+<div id="clusterMap">
+    <button id="toggleModeBtn" class="btn btn-light-outline display-1 position-absolute top-0 end-0 m-3" type="button" aria-label="Toggle dark/light mode" style="z-index: 1;">
+        ☀️
+    </button>
+</div>
 <div class="container mt-2">
     <h1 class="text-center my-4">Campgrounds</h1>
 
@@ -35,9 +39,6 @@ YelpCamp - Home
         });
     });
 </script>
-
-<!-- <a href="/campgrounds/<%= //camp._id %>">
-</a> -->
 
 <script>
     const campgrounds = JSON.parse('<%- JSON.stringify(campgrounds) %>');

@@ -5,7 +5,7 @@ document.querySelector('input#images').addEventListener('change', function (ev) 
         let url = URL.createObjectURL(ev.target.files[i]);
         preview.innerHTML += `
             <div class="d-inline-block position-relative p-0">
-                <img src="${url}" style="height: 6rem; width: 8rem; margin: 0 0.6rem 0.6rem 0; object-fit: cover; border-radius: 0.4rem">
+                <img class="yelp-camp-thumbnail" src="${url}">
             </div>
             `;
     }

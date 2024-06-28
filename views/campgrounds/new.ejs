@@ -1,46 +1,47 @@
 <%- contentFor('title') %>
 New Campground
 <%- contentFor('body') %>
-<div class="row">
-    <div class="col-lg-8 offset-lg-2">
-        <h1>New Campground</h1>
-        <form class="form" action="/campgrounds" method="POST" enctype="multipart/form-data" novalidate>
-            <div class="mb-2">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" id="title" class="form-control" name="campground[title]" required>
-            </div>
-            <div class="row">
-                <div class="mb-2 col-sm-6">
-                    <label for="location" class="form-label">Location</label>
-                    <input type="text" id="location" class="form-control" name="campground[location]" required>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-8 offset-lg-2">
+            <h1>New Campground</h1>
+            <form class="form" action="/campgrounds" method="POST" enctype="multipart/form-data" novalidate>
+                <div class="mb-2">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" id="title" class="form-control" name="campground[title]" required>
                 </div>
-                <div class="mb-2 col-sm-6">
-                    <label for="price" class="form-label">Price</label>
-                    <div class="input-group">
-                        <span class="input-group-text" id="price-label">$</span>
-                        <input type="text" id="price" class="form-control" name="campground[price]" aria-describedby="price-label" required min="0">
+                <div class="row">
+                    <div class="mb-2 col-sm-6 ps-0 pe-4">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" id="location" class="form-control" name="campground[location]" required>
+                    </div>
+                    <div class="mb-2 col-sm-6 px-0">
+                        <label for="price" class="form-label">Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text" id="price-label">$</span>
+                            <input type="text" id="price" class="form-control" name="campground[price]" aria-describedby="price-label" required min="0">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="mb-2">
-                <label for="images" class="form-label">Add Images</label>
-                <input class="form-control" type="file" name="images" accept="image/*" id="images" multiple>
-            </div>
-            <div id="image-preview" class="mt-3">
-            </div>
+                <div class="mb-2">
+                    <label for="images" class="form-label">Add Images</label>
+                    <input class="form-control" type="file" name="images" accept="image/*" id="images" multiple>
+                </div>
+                <div id="image-preview" class="mt-3">
+                </div>
 
-            <script src="/js/imagePreview.js"></script>
+                <script src="/js/imagePreview.js"></script>
 
-            <div class="mb-2">
-                <label for="description" class="form-label">Description</label>
-                <textarea rows="4" id="description" class="form-control" name="campground[description]" required></textarea>
-            </div>
-            <button type="submit" class="my-2 btn btn-info">Confirm</button>
-
-            <footer>
-                <a href="/campgrounds">Back to all</a>
-            </footer>
-        </form>
+                <div class="mb-2">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea rows="4" id="description" class="form-control" name="campground[description]" required></textarea>
+                </div>
+                <button type="submit" class="my-2 me-1 btn btn-info">Confirm</button>
+                <a href="/campgrounds">
+                    <button type="button" class="my-2 btn btn-secondary">Back</button>
+                </a>
+            </form>
+        </div>
     </div>
 </div>
 <script src="/js/formValidate.js"></script>

@@ -102,9 +102,7 @@ app.use('/campgrounds/:id/reviews', reviewsRouter);
 app.use('/', authRouter);
 
 app.get('/', (req, res) => {
-    req.flash('success', 'You are being redirected!');
-    req.flash('error', 'You are being redirected!');
-    res.redirect('/campgrounds');
+    res.render('home');
 });
 
 app.all('*', (res, req, next) => {

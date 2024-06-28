@@ -1,13 +1,13 @@
 <%- contentFor('title') %>
 YelpCamp - Register
 <%- contentFor('body') %>
-<div class="row">
-    <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+<div class="row mt-5">
+    <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-4">
         <h1>Registration</h1>
         <form class="form" action="/register" method="POST" novalidate>
             <div class="mb-2">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" id="username" class="form-control" name="user[username]" value="<%= locals.userInput.username %>" required>
+                <input type="text" id="username" class="form-control" name="user[username]" value="<%= locals.userInput.username %>" autofocus required>
             </div>
             <div class="mb-2">
                 <label for="email" class="form-label">Email</label>

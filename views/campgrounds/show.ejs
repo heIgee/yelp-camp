@@ -1,7 +1,7 @@
 <%- contentFor('title') %>
 Campground: <%= campground.title %>
 <%- contentFor('body') %>
-<div class="container">
+<div class="container mt-2">
     <div class="row">
         <div class="col-lg-6">
             <script>
@@ -16,7 +16,7 @@ Campground: <%= campground.title %>
                     <div class="carousel-inner">
                         <% campground.images.forEach((image, i) => { %>
                         <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
-                            <img src="<%= image.url %>" class="card-img-top w-100" alt="" style="height: 30rem; object-fit: cover;">
+                            <img src="<%= image.url %>" class="yelp-camp-carousel-image card-img-top w-100" alt="">
                         </div>
                         <% }) %>
                     </div>
@@ -56,12 +56,12 @@ Campground: <%= campground.title %>
                         <button class="btn btn-danger py-1" type="submit">Delete</button>
                     </form>
                     <% } %>
-                    <a class="card-link btn btn-secondary py-1" href="/campgrounds">Back to all</a>
+                    <a class="card-link btn btn-secondary py-1" href="/campgrounds">Back</a>
                 </div>
             </section>
         </div>
         <div class="col-lg-6 mt-3 mt-lg-0">
-            <div id='map' class="card mb-2" style='width: 100%; height: 30rem;'></div>
+            <div id='map' class="card mb-2"></div>
 
             <section class="mb-2 list-group">
 
@@ -71,6 +71,7 @@ Campground: <%= campground.title %>
                         <!-- <label for="rating" class="form-label">Rating: </label> -->
                         <link rel="stylesheet" href="/css/stars.css">
                         <fieldset class="d-inline starability-basic" style="min-height: 0;">
+                            <!-- default min-height annoying 60px -->
                             <!-- <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." /> -->
                             <input type="radio" id="first-rate1" name="review[rating]" value="1" />
                             <label for="first-rate1" title="Terrible">1 star</label>
