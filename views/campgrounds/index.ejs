@@ -1,5 +1,5 @@
 <%- contentFor('title') %>
-YelpCamp - Home
+YelpCamp - Campgrounds
 <%- contentFor('body') %>
 <div id="clusterMap">
     <button id="toggleModeBtn" class="btn btn-light-outline display-1 position-absolute top-0 end-0 m-3" type="button" aria-label="Toggle dark/light mode" style="z-index: 1;">
@@ -15,7 +15,7 @@ YelpCamp - Home
             <div class="card h-100">
                 <div class="row g-0">
                     <div class="col-lg-6 ratio ratio-16x9">
-                        <img class="img-fluid card-img-top object-fit-cover" src="<%= campground.images.length ? campground.images[0].url : 'https://img.freepik.com/free-vector/camping-area-landscape-concept_23-2148670950.jpg' %>" alt="" data-url="/campgrounds/<%= campground._id %>">
+                        <img class="img-fluid card-img-top object-fit-cover" src="<%= campground.images.length ? campground.images[0].url : 'https://img.freepik.com/premium-vector/black-white-camping-logo_47570-403.jpg' %>" alt="" data-url="/campgrounds/<%= campground._id %>">
                     </div>
                     <div class="col-lg-6">
                         <div class="card-body">

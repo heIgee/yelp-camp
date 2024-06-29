@@ -21,17 +21,7 @@ main {
     border-radius: 0.4rem;
 }
 
-.yelp-camp-carousel-image {
-    height: 30rem;
-    object-fit: cover;
-}
-
 #clusterMap {
-    width: 100%;
-    height: 40rem;
-}
-
-#map {
-    width: 100%;
-    height: 30rem;
+    height: 45rem;
+    max-height: 75vh;
 }

@@ -1,0 +1,13 @@
+#map {
+    height: 30rem;
+    max-height: 75vh;
+}
+
+/* .carousel-inner {
+    max-height: 60vh;
+} */
+
+.carousel-image {
+    height: 30rem;
+    object-fit: cover;
+}
