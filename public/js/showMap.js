@@ -4,7 +4,7 @@ const coordinates = campground.geometry.coordinates;
 if (coordinates.length) {
     const map = new mapboxgl.Map({
         container: 'map', // container ID
-        style: 'mapbox://styles/mapbox/outdoors-v12',// streets-v12', standard // style URL
+        style: 'mapbox://styles/mapbox/outdoors-v12',// streets-v12, standard // style URL
         center: coordinates, // starting position [lng, lat]
         zoom: 9, // starting zoom
     });

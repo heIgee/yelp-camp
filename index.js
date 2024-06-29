@@ -29,12 +29,9 @@ const app = express();
 
 // mongo
 
-// const dbUrl = process.env.NODE_ENV === 'production'
-//     ? process.env.ATLAS_URL
-//     : 'mongodb://localhost:27017/YelpCamp';
-
-const dbUrl = process.env.ATLAS_URL;
-// const dbUrl = 'mongodb://localhost:27017/YelpCamp';
+const dbUrl = process.env.NODE_ENV === 'production'
+    ? process.env.ATLAS_URL
+    : 'mongodb://localhost:27017/YelpCamp';
 
 mongoose.connect(dbUrl, {});
 
@@ -78,12 +75,12 @@ app.use(
 
 const sessionConfig = {
     name: 'campfire',
-    secret: process.env.SECRET, // TODO env
+    secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        // secure: true, // only HTTPS
+        // secure: !!(process.env.NODE_ENV === 'production'), TODO: breaks auth (cookie not sent)
         maxAge: 1000 * 60 * 60 * 24
     },
     store: MongoStore.create({
@@ -145,5 +142,10 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 80;
 
 app.listen(port, () => {
-    console.log('🚀 Server is listening on http://localhost:80 💕');
+    if (process.env.NODE_ENV === 'production') {
+        console.log(`🚀 Server is listening on ${port} [production] 💕`);
+    }
+    else {
+        console.log(`🚀 Server is listening on http://localhost:${port} [development] 💕`);
+    }
 });

@@ -13,7 +13,7 @@ const seedQuantity = process.argv[2] || 16;
 configDotenv();
 const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
 
-const geocoder = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
+// const geocoder = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN });
 
 mongoose.connect('mongodb://localhost:27017/YelpCamp', {});
 

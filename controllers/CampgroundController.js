@@ -44,11 +44,17 @@ class CampgroundController {
         const { id: campgroundId } = req.params;
         const { title, location, price, description } = req.body.campground;
 
+        const geoData = await geocoder.forwardGeocode({
+            query: req.body.campground.location,
+            limit: 1
+        }).send();
+        const geometry = geoData.body.features[0].geometry;
+
         await Campground.updateOne(
             { _id: campgroundId },
             {
                 $set: {
-                    title, location, price, description
+                    title, location, price, description, geometry
                 }
             }
         );

@@ -1,9 +1,17 @@
+// no worries, public token from their website
 mapboxgl.accessToken = 'pk.eyJ1IjoiaGVsLWdlZSIsImEiOiJjbHh2ZW1mZjMwNzJpMnJzYWJoeTJ3ZzB3In0.IJkBcQHk1q4EIPTYyUOcUg';
+
 const toggleButton = document.querySelector('#toggleModeBtn');
 
 let mode = 'light';
 
-toggleButton.addEventListener('click', function () {
+toggleButton.addEventListener('click', toggleMode);
+
+let map;
+initializeMap(mode);
+
+// Function to toggle mode and reinitialize map
+function toggleMode() {
     mode = mode === 'dark' ? 'light' : 'dark';
     initializeMap(mode);
 
@@ -16,20 +24,7 @@ toggleButton.addEventListener('click', function () {
         toggleButton.classList.remove('btn-light-outline');
         toggleButton.classList.add('btn-dark-outline');
     }
-});
-
-
-let map;
-initializeMap(mode);
-
-
-// Function to toggle mode and reinitialize map
-function toggleMode() {
 }
-
-// Call toggleMode when you want to change the mode
-// For example, you might have a button:
-// document.querySelector('body').addEventListener('click', toggleMode);
 
 function initializeMap(mode) {
     if (map) {

@@ -80,11 +80,16 @@ Campground: <%= campground.title %>
                             <input type="radio" id="first-rate5" name="review[rating]" value="5" checked />
                             <label for="first-rate5" title="Amazing">5 stars</label>
                         </fieldset>
+                        <% if (user) { %>
                         <button type="submit" class="d-inline btn btn-success my-1 float-end">Send</button>
+                        <% } else { %>
+                        <a href="/login">
+                            <button type="button" class="d-inline btn btn-outline-secondary my-1 float-end">Login to send</button>
+                        </a>
+                        <% } %>
                     </div>
                     <div class="mb-2">
-                        <!-- <label for="content" class="form-label">Review: </label> -->
-                        <textarea rows="3" id="content" class="form-control" name="review[content]" required></textarea>
+                        <textarea rows="3" id="content" class="form-control" name="review[content]" <%= user ? '' : 'disabled' %> required></textarea>
                     </div>
                 </form>
             </section>
@@ -125,7 +130,7 @@ Campground: <%= campground.title %>
 </div>
 <script>
     const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
-    const campground = JSON.parse('<%- JSON.stringify(campground) %>');
+    const campground = <%- JSON.stringify(campground) %>;
 </script>
 <script src="/js/showMap.js"></script>
 <script src="/js/formValidate.js"></script>
